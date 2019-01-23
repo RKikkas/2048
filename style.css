@@ -1,0 +1,16 @@
+.gamecol {
+    border: 1px solid black;
+}
+.colnumber {
+    margin-top:25%;
+}
+.gamecol::before {
+    content: "";
+    float: left;
+    padding-bottom: 100%;
+}
+.gamecol::after {
+    clear: left;
+    content: " ";
+    display: table;
+}
