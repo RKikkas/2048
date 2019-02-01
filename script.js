@@ -43,14 +43,13 @@ window.onkeyup = function(e) {
 
         playRound(newArr);
 
-        console.log("up");
         if(!compare(arr, newArr)){
             addToEmptySpot();
         }
 
     } else if (key === "d" || key === "D" || key === "ArrowRight"){
 
-        // Rotate 90 degrees
+        // Rotate 90 degrees clockwise
         newArr = rotateArray(newArr, arr, 3, 7, 11, 15, 2, 6, 10,
             14, 1, 5, 9, 13, 0, 4, 8, 12);
 
@@ -60,17 +59,48 @@ window.onkeyup = function(e) {
         newArr = rotateArray(newArr, newArr, 12, 8, 4, 0, 13, 9, 5,
             1, 14, 10, 6, 2, 15, 11, 7, 3);
 
-        console.log("right");
         if(!compare(arr, newArr)){
             addToEmptySpot();
         }
 
     } else if (key === "s" || key === "S" || key === "ArrowDown"){
-        console.log("down");
-        addToEmptySpot();
+
+        // Rotate 180 degrees, in other words reverse it.
+        newArr = arr.reverse();
+
+        playRound(newArr);
+
+        // Rotate/reverse it back
+        newArr = newArr.reverse();
+
+        if(!compare(arr, newArr)){
+            addToEmptySpot();
+        }
+
     } else if (key === "a" || key === "A" || key === "ArrowLeft"){
-        console.log("left");
-        addToEmptySpot();
+
+        // Rotate 90 degrees anticlockwise
+        newArr = rotateArray(newArr, arr, 12, 8, 4, 0, 13, 9, 5,
+            1, 14, 10, 6, 2, 15, 11, 7, 3);
+
+        playRound(newArr);
+
+        // Rotate it back
+        newArr = rotateArray(newArr, newArr, 3, 7, 11, 15, 2, 6, 10,
+            14, 1, 5, 9, 13, 0, 4, 8, 12);
+
+        if(!compare(arr, newArr)){
+            addToEmptySpot();
+        }
+    }
+
+    // Inserts the new array values on to the grid
+    for (let i = 1; i < 5; i++){
+        let j = 1;
+        for (let x = (i - 1) * 4; x < i * 4 ; x++){
+            document.getElementById("row" + i + "col" + j).innerHTML = newArr[x];
+            j++;
+        }
     }
 
     function playRound(newArr){
@@ -154,8 +184,9 @@ window.onkeyup = function(e) {
     }
 
     function rotateArray(arr1, arr2, num0, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15){
-        return arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
+        arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
             arr2[num8], arr2[num9], arr2[num10], arr2[num11], arr2[num12], arr2[num13], arr2[num14], arr2[num15]];
+        return arr1;
     }
 
     // Checks empty slots on the grid, then assigns either a 2 or a 4 to a random empty slot
@@ -176,16 +207,6 @@ window.onkeyup = function(e) {
             newArr[emptySlots[randomSlot][1]] = Math.random() <= 0.5 ? "2" : "4";
         }
     }
-
-    // Inserts the new array values on to the grid
-    for (let i = 1; i < 5; i++){
-        let j = 1;
-            for (let x = (i - 1) * 4; x < i * 4 ; x++){
-                document.getElementById("row" + i + "col" + j).innerHTML = newArr[x];
-                j++;
-            }
-    }
-
 
     function compare(arr1, arr2){
 
