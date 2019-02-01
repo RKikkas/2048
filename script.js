@@ -1,4 +1,6 @@
 window.onload = function() {
+    resizeGrid();
+
     let startArr = [];
 
     for (let i = 0; i < 16; i++){
@@ -25,7 +27,6 @@ window.onload = function() {
         }
     }
 
-    resizeGrid();
     addColor();
 };
 
@@ -118,7 +119,6 @@ function resizeGrid() {
         for (let j = 1; j < 5; j++){
             let width = document.getElementById("row" + i + "col" + j).offsetWidth;
             document.getElementById("row" + i + "col" + j).style.height = width + "px";
-            console.log(width);
         }
     }
 }
