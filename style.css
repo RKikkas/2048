@@ -1,21 +1,12 @@
 .gamecol {
     border: 1px solid black;
     padding: 0;
+    width: 25%;
     display: flex;
     align-items: center;
 }
 .colnumber {
     width: 100%;
-}
-.gamecol::before {
-    content: "";
-    float: left;
-    padding-bottom: 100%;
-}
-.gamecol::after {
-    clear: left;
-    content: " ";
-    display: table;
 }
 
 /* Number colors */

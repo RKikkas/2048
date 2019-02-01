@@ -25,6 +25,7 @@ window.onload = function() {
         }
     }
 
+    resizeGrid();
     addColor();
 };
 
@@ -107,6 +108,20 @@ window.onkeyup = function(e) {
 
     addColor();
 };
+window.onresize = function() {
+    resizeGrid();
+};
+
+// Resize grid slots when window size changes
+function resizeGrid() {
+    for (let i = 1; i < 5; i++){
+        for (let j = 1; j < 5; j++){
+            let width = document.getElementById("row" + i + "col" + j).offsetWidth;
+            document.getElementById("row" + i + "col" + j).style.height = width + "px";
+            console.log(width);
+        }
+    }
+}
 
 // Adds classes based on value to add color
 function addColor(){
