@@ -24,6 +24,8 @@ window.onload = function() {
             j++;
         }
     }
+
+    addColor();
 };
 
 window.onkeyup = function(e) {
@@ -44,7 +46,7 @@ window.onkeyup = function(e) {
         playRound(newArr);
 
         if(!compare(arr, newArr)){
-            addToEmptySpot();
+            addToEmptySpot(newArr);
         }
 
     } else if (key === "d" || key === "D" || key === "ArrowRight"){
@@ -60,7 +62,7 @@ window.onkeyup = function(e) {
             1, 14, 10, 6, 2, 15, 11, 7, 3);
 
         if(!compare(arr, newArr)){
-            addToEmptySpot();
+            addToEmptySpot(newArr);
         }
 
     } else if (key === "s" || key === "S" || key === "ArrowDown"){
@@ -74,7 +76,7 @@ window.onkeyup = function(e) {
         newArr = newArr.reverse();
 
         if(!compare(arr, newArr)){
-            addToEmptySpot();
+            addToEmptySpot(newArr);
         }
 
     } else if (key === "a" || key === "A" || key === "ArrowLeft"){
@@ -90,7 +92,7 @@ window.onkeyup = function(e) {
             14, 1, 5, 9, 13, 0, 4, 8, 12);
 
         if(!compare(arr, newArr)){
-            addToEmptySpot();
+            addToEmptySpot(newArr);
         }
     }
 
@@ -103,52 +105,123 @@ window.onkeyup = function(e) {
         }
     }
 
-    function playRound(newArr){
+    addColor();
+};
 
-        // array for slots that have already been used this keypress
-        let usedSlots = [];
+// Adds classes based on value to add color
+function addColor(){
+    for (let i = 1; i < 5; i++){
+        for (let j = 1; j < 5; j++){
+            let element = document.getElementById("row" + i + "col" + j);
+            let parent = element.parentElement;
+            let value = element.innerHTML;
+            let className = parent.classList;
+            const classValues = ["num2", "num4", "num8", "num16", "num32", "num64", "num128", "num256", "num512",
+                "num1024", "num2048", "num4096", "num8192", "num16384", "num32768", "num65536"];
+            switch (value) {
+                case "2":
+                    className.add("num2");
+                    break;
+                case "4":
+                    className.remove("num2");
+                    className.add("num4");
+                    break;
+                case "8":
+                    className.remove("num4");
+                    className.add("num8");
+                    break;
+                case "16":
+                    className.remove("num8");
+                    className.add("num16");
+                    break;
+                case "32":
+                    className.remove("num16");
+                    className.add("num32");
+                    break;
+                case "64":
+                    className.remove("num32");
+                    className.add("num64");
+                    break;
+                case "128":
+                    className.remove("num64");
+                    className.add("num128");
+                    break;
+                case "256":
+                    className.remove("num128");
+                    className.add("num256");
+                    break;
+                case "512":
+                    className.remove("num256");
+                    className.add("num512");
+                    break;
+                case "1024":
+                    className.remove("num512");
+                    className.add("num1024");
+                    break;
+                case "2048":
+                    className.remove("num1024");
+                    className.add("num2048");
+                    break;
+                case "4096":
+                    className.remove("num2048");
+                    className.add("num4096");
+                    break;
+                case "8192":
+                    className.remove("num4096");
+                    className.add("num8192");
+                    break;
+                case "16384":
+                    className.remove("num8192");
+                    className.add("num16384");
+                    break;
+                case "32768":
+                    className.remove("num16384");
+                    className.add("num32768");
+                    break;
+                case "65536":
+                    className.remove("num32768");
+                    className.add("num65536");
+                    break;
+                default:
+                    className.remove(...classValues);
+                    break;
+            }
+        }
+    }
+}
 
-        for (let i = 4; i < newArr.length; i++) {
+function playRound(newArr){
 
-            let value = newArr[i];
-            let upperValue = newArr[i - 4];
-            let upperValue2 = newArr[i - 8];
-            let upperValue3 = newArr[i - 12];
-            if (value !== "") {
-                if (upperValue === "") {
-                    // checks if its 3rd row
-                    if (upperValue2 !== undefined) {
-                        // checks if its 4th row
-                        if (upperValue3 !== undefined) {
-                            // 4th row
-                            if (upperValue2 === "" && upperValue3 === "") {
-                                moveNumbers(i, 3, value, "move");
-                            } else if (upperValue2 === "" && upperValue3) {
-                                if (upperValue3 === value) {
-                                    if (usedSlots.includes(i - 12)) {
-                                        moveNumbers(i, 2, value, "move");
-                                    } else {
-                                        moveNumbers(i, 3, value, "add", upperValue3);
-                                    }
-                                } else {
+    // array for slots that have already been used this keypress
+    let usedSlots = [];
+
+    for (let i = 4; i < newArr.length; i++) {
+
+        let value = newArr[i];
+        let upperValue = newArr[i - 4];
+        let upperValue2 = newArr[i - 8];
+        let upperValue3 = newArr[i - 12];
+        if (value !== "") {
+            if (upperValue === "") {
+                // checks if its 3rd row
+                if (upperValue2 !== undefined) {
+                    // checks if its 4th row
+                    if (upperValue3 !== undefined) {
+                        // 4th row
+                        if (upperValue2 === "" && upperValue3 === "") {
+                            moveNumbers(i, 3, value, "move");
+                        } else if (upperValue2 === "" && upperValue3) {
+                            if (upperValue3 === value) {
+                                if (usedSlots.includes(i - 12)) {
                                     moveNumbers(i, 2, value, "move");
-                                }
-                            } else if (upperValue2 && upperValue3) {
-                                if (upperValue2 === value) {
-                                    if (usedSlots.includes(i - 8)) {
-                                        moveNumbers(i, 1, value, "move");
-                                    } else {
-                                        moveNumbers(i, 2, value, "add", upperValue2);
-                                    }
                                 } else {
-                                    moveNumbers(i, 1, value, "move");
+                                    moveNumbers(i, 3, value, "add", upperValue3);
                                 }
-                            }
-                        } // 3rd row
-                        else {
-                            if (upperValue2 === "") {
+                            } else {
                                 moveNumbers(i, 2, value, "move");
-                            } else if (upperValue2 === value) {
+                            }
+                        } else if (upperValue2 && upperValue3) {
+                            if (upperValue2 === value) {
                                 if (usedSlots.includes(i - 8)) {
                                     moveNumbers(i, 1, value, "move");
                                 } else {
@@ -158,68 +231,82 @@ window.onkeyup = function(e) {
                                 moveNumbers(i, 1, value, "move");
                             }
                         }
-                    } else {
-                        moveNumbers(i, 1, value, "move");
+                    } // 3rd row
+                    else {
+                        if (upperValue2 === "") {
+                            moveNumbers(i, 2, value, "move");
+                        } else if (upperValue2 === value) {
+                            if (usedSlots.includes(i - 8)) {
+                                moveNumbers(i, 1, value, "move");
+                            } else {
+                                moveNumbers(i, 2, value, "add", upperValue2);
+                            }
+                        } else {
+                            moveNumbers(i, 1, value, "move");
+                        }
                     }
-                } else if (value === upperValue) {
-                    moveNumbers(i, 1, value, "add", upperValue);
+                } else {
+                    moveNumbers(i, 1, value, "move");
                 }
-            }
-        }
-
-        function moveNumbers(loopIndex, moveSlotsNum, value, useCase, value2) {
-            let arrPos = loopIndex - (moveSlotsNum * 4);
-            switch(useCase) {
-                case "move":
-                    newArr[arrPos] = value;
-                    newArr[loopIndex] = "";
-                    break;
-                case "add":
-                    newArr[arrPos] = (parseInt(value) + parseInt(value2)).toString();
-                    newArr[loopIndex] = "";
-                    usedSlots.push(arrPos);
-                    break;
+            } else if (value === upperValue) {
+                moveNumbers(i, 1, value, "add", upperValue);
             }
         }
     }
 
-    function rotateArray(arr1, arr2, num0, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15){
-        arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
-            arr2[num8], arr2[num9], arr2[num10], arr2[num11], arr2[num12], arr2[num13], arr2[num14], arr2[num15]];
-        return arr1;
-    }
-
-    // Checks empty slots on the grid, then assigns either a 2 or a 4 to a random empty slot
-    function addToEmptySpot(){
-        let emptySlots = [];
-        let emptySlotsNum = 1;
-        let randomSlot = 0;
-
-        for (let i = 0; i < arr.length; i++){
-            if (newArr[i] === ""){
-                emptySlots.push([emptySlotsNum, i]);
-                emptySlotsNum++;
-            }
-        }
-
-        if (emptySlots.length) {
-            randomSlot = Math.floor(Math.random() * emptySlots.length);
-            newArr[emptySlots[randomSlot][1]] = Math.random() <= 0.5 ? "2" : "4";
+    function moveNumbers(loopIndex, moveSlotsNum, value, useCase, value2) {
+        let arrPos = loopIndex - (moveSlotsNum * 4);
+        switch(useCase) {
+            case "move":
+                newArr[arrPos] = value;
+                newArr[loopIndex] = "";
+                break;
+            case "add":
+                newArr[arrPos] = (parseInt(value) + parseInt(value2)).toString();
+                newArr[loopIndex] = "";
+                usedSlots.push(arrPos);
+                break;
         }
     }
+}
 
-    function compare(arr1, arr2){
+// Rotates arrays to allow playRound to use them correctly
+function rotateArray(arr1, arr2, num0, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15){
+    arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
+        arr2[num8], arr2[num9], arr2[num10], arr2[num11], arr2[num12], arr2[num13], arr2[num14], arr2[num15]];
+    return arr1;
+}
 
-        let result = true;
+// Checks empty slots on the grid, then assigns either a 2 or a 4 to a random empty slot
+function addToEmptySpot(arr){
+    let emptySlots = [];
+    let emptySlotsNum = 1;
+    let randomSlot = 0;
 
-        for (let i = 0; i < arr.length; i++){
-            if(arr1[i] !== arr2[i]){
-                result = false;
-                return result;
-            }
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i] === ""){
+            emptySlots.push([emptySlotsNum, i]);
+            emptySlotsNum++;
         }
-
-        return result;
-
     }
-};
+
+    if (emptySlots.length) {
+        randomSlot = Math.floor(Math.random() * emptySlots.length);
+        arr[emptySlots[randomSlot][1]] = Math.random() <= 0.5 ? "2" : "4";
+    }
+}
+
+// Compares whether any changes were made with the keypress
+function compare(arr1, arr2){
+
+    let result = true;
+
+    for (let i = 0; i < arr1.length; i++){
+        if(arr1[i] !== arr2[i]){
+            result = false;
+            return result;
+        }
+    }
+
+    return result;
+}
