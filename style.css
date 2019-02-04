@@ -23,50 +23,50 @@ body {
 }
 /* Number colors */
 .num2 {
-    background-color: #fff0b3;
+    background-color: #eee4da;
 }
 .num4 {
-    background-color: #ffeb99;
+    background-color: #ede0c8;
 }
 .num8 {
-    background-color: #ffe680;
+    background-color: #f2b179;
 }
 .num16 {
-    background-color: #ffe066;
+    background-color: #f59563;
 }
 .num32 {
-    background-color: #ffdb4d;
+    background-color: #f67c5f;
 }
 .num64 {
-    background-color: #ffd633;
+    background-color: #f65e3b;
 }
 .num128 {
-    background-color: #ffd11a;
+    background-color: #edcf72;
 }
 .num256 {
-    background-color: #ffcc00;
+    background-color: #edcc61;
 }
 .num512 {
-    background-color: #ffcc80;
+    background-color: #edc850;
 }
 .num1024 {
-    background-color: #ffc266;
+    background-color: #edc53f;
 }
 .num2048 {
-    background-color: #ffb84d;
+    background-color: #edc22e;
 }
-.num4192 {
-    background-color: #ffad33;
+.num4096 {
+    background-color: #a2b9bc;
 }
 .num8192 {
-    background-color: #ffa31a;
+    background-color: #b2ad7f;
 }
 .num16384 {
-    background-color: #ff9900;
+    background-color: #878f99;
 }
 .num32768 {
-    background-color: #e68a00;
+    background-color: #eca1a6;
 }
 .num65536 {
-    background-color: #cc7a00;
+    background-color: #6b5b95;
 }
