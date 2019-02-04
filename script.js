@@ -32,6 +32,31 @@ window.onload = function() {
 
 window.onkeyup = function(e) {
     let key = e.key;
+
+    if (key === "w" || key === "W" || key === "ArrowUp"){
+
+        makeMoves("up");
+
+    } else if (key === "d" || key === "D" || key === "ArrowRight"){
+
+        makeMoves("right");
+
+    } else if (key === "s" || key === "S" || key === "ArrowDown"){
+
+        makeMoves("down");
+
+    } else if (key === "a" || key === "A" || key === "ArrowLeft"){
+
+        makeMoves("left");
+
+    }
+};
+window.onresize = function() {
+    resizeGrid();
+};
+
+function makeMoves(move) {
+
     let arr = [];
 
     for (let i = 1; i < 5; i++){
@@ -43,66 +68,64 @@ window.onkeyup = function(e) {
 
     let newArr = [...arr];
 
-    if (key === "w" || key === "W" || key === "ArrowUp"){
+    switch (move) {
+        case "up":
 
-        playRound(newArr);
+            playRound(newArr);
 
-        if(!compare(arr, newArr)){
-            addToEmptySpot(newArr);
-        }
+            if(!compare(arr, newArr)){
+                addToEmptySpot(newArr);
+            }
+            break;
+        case "right":
 
-    } else if (key === "d" || key === "D" || key === "ArrowRight"){
+            // Rotate 90 degrees clockwise
+            newArr = rotateArray(newArr, arr, 3, 7, 11, 15, 2, 6, 10,
+                14, 1, 5, 9, 13, 0, 4, 8, 12);
 
-        // Rotate 90 degrees clockwise
-        newArr = rotateArray(newArr, arr, 3, 7, 11, 15, 2, 6, 10,
-            14, 1, 5, 9, 13, 0, 4, 8, 12);
+            playRound(newArr);
 
-        playRound(newArr);
+            // Rotate it back
+            newArr = rotateArray(newArr, newArr, 12, 8, 4, 0, 13, 9, 5,
+                1, 14, 10, 6, 2, 15, 11, 7, 3);
 
-        // Rotate it back
-        newArr = rotateArray(newArr, newArr, 12, 8, 4, 0, 13, 9, 5,
-            1, 14, 10, 6, 2, 15, 11, 7, 3);
+            if(!compare(arr, newArr)){
+                addToEmptySpot(newArr);
+            }
+            break;
+        case "down":
+            // Rotate 180 degrees, in other words reverse it.
+            newArr = [...arr].reverse();
 
-        if(!compare(arr, newArr)){
-            addToEmptySpot(newArr);
-        }
+            playRound(newArr);
 
-    } else if (key === "s" || key === "S" || key === "ArrowDown"){
+            // Rotate/reverse it back
+            newArr.reverse();
 
-        // Rotate 180 degrees, in other words reverse it.
-        newArr = [...arr].reverse();
+            if(!compare(arr, newArr)){
+                addToEmptySpot(newArr);
+            }
+            break;
+        case "left":
 
-        playRound(newArr);
+            // Rotate 90 degrees anticlockwise
+            newArr = rotateArray(newArr, arr, 12, 8, 4, 0, 13, 9, 5,
+                1, 14, 10, 6, 2, 15, 11, 7, 3);
 
-        // Rotate/reverse it back
-        newArr.reverse();
+            playRound(newArr);
 
-        if(!compare(arr, newArr)){
-            addToEmptySpot(newArr);
-        }
+            // Rotate it back
+            newArr = rotateArray(newArr, newArr, 3, 7, 11, 15, 2, 6, 10,
+                14, 1, 5, 9, 13, 0, 4, 8, 12);
 
-    } else if (key === "a" || key === "A" || key === "ArrowLeft"){
-
-        // Rotate 90 degrees anticlockwise
-        newArr = rotateArray(newArr, arr, 12, 8, 4, 0, 13, 9, 5,
-            1, 14, 10, 6, 2, 15, 11, 7, 3);
-
-        playRound(newArr);
-
-        // Rotate it back
-        newArr = rotateArray(newArr, newArr, 3, 7, 11, 15, 2, 6, 10,
-            14, 1, 5, 9, 13, 0, 4, 8, 12);
-
-        if(!compare(arr, newArr)){
-            addToEmptySpot(newArr);
-        }
+            if(!compare(arr, newArr)){
+                addToEmptySpot(newArr);
+            }
+            break;
     }
 
     insertToGrid(newArr);
-};
-window.onresize = function() {
-    resizeGrid();
-};
+}
 
 // Resize grid slots when window size changes
 function resizeGrid() {
@@ -329,4 +352,38 @@ function compare(arr1, arr2){
     }
 
     return result;
+}
+
+// Checks for swipe inputs and processes them
+document.addEventListener('touchstart', process_touchstart, false);
+document.addEventListener('touchend', process_touchend, false);
+
+let xStart;
+let yStart;
+
+function process_touchstart(e) {
+    xStart = e.touches[0].clientX;
+    yStart = e.touches[0].clientY;
+}
+
+function process_touchend(e) {
+    let xEnd = e.changedTouches[0].clientX;
+    let yEnd = e.changedTouches[0].clientY;
+
+    let xDiff = xStart - xEnd;
+    let yDiff = yStart - yEnd;
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+            makeMoves("left");
+        } else {
+            makeMoves("right");
+        }
+    } else {
+        if (yDiff > 0) {
+            makeMoves("up");
+        } else {
+            makeMoves("down");
+        }
+    }
 }
