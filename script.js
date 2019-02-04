@@ -127,13 +127,84 @@ function makeMoves(move) {
     insertToGrid(newArr);
 }
 
-// Resize grid slots when window size changes
-function resizeGrid() {
-    for (let i = 1; i < 5; i++){
-        for (let j = 1; j < 5; j++){
-            let width = document.getElementById("row" + i + "col" + j).offsetWidth;
-            document.getElementById("row" + i + "col" + j).style.height = width + "px";
-            document.getElementById("row" + i + "col" + j).style.lineHeight = width + "px";
+function playRound(newArr){
+
+    // array for slots that have already been used this keypress
+    let usedSlots = [];
+
+    for (let i = 4; i < newArr.length; i++) {
+
+        let value = newArr[i];
+        let upperValue = newArr[i - 4];
+        let upperValue2 = newArr[i - 8];
+        let upperValue3 = newArr[i - 12];
+        if (value !== "") {
+            if (upperValue === "") {
+                // checks if its 3rd row
+                if (upperValue2 !== undefined) {
+                    // checks if its 4th row
+                    if (upperValue3 !== undefined) {
+                        // 4th row
+                        if (upperValue2 === "" && upperValue3 === "") {
+                            moveNumbers(i, 3, value, "move");
+                        } else if (upperValue2 === "" && upperValue3) {
+                            if (upperValue3 === value) {
+                                if (usedSlots.includes(i - 12)) {
+                                    moveNumbers(i, 2, value, "move");
+                                } else {
+                                    moveNumbers(i, 3, value, "add", upperValue3);
+                                }
+                            } else {
+                                moveNumbers(i, 2, value, "move");
+                            }
+                        } else if (upperValue2 && upperValue3) {
+                            if (upperValue2 === value) {
+                                if (usedSlots.includes(i - 8)) {
+                                    moveNumbers(i, 1, value, "move");
+                                } else {
+                                    moveNumbers(i, 2, value, "add", upperValue2);
+                                }
+                            } else {
+                                moveNumbers(i, 1, value, "move");
+                            }
+                        }
+                    } // 3rd row
+                    else {
+                        if (upperValue2 === "") {
+                            moveNumbers(i, 2, value, "move");
+                        } else if (upperValue2 === value) {
+                            if (usedSlots.includes(i - 8)) {
+                                moveNumbers(i, 1, value, "move");
+                            } else {
+                                moveNumbers(i, 2, value, "add", upperValue2);
+                            }
+                        } else {
+                            moveNumbers(i, 1, value, "move");
+                        }
+                    }
+                } else {
+                    moveNumbers(i, 1, value, "move");
+                }
+            } else if (value === upperValue) {
+                moveNumbers(i, 1, value, "add", upperValue);
+            }
+        }
+    }
+
+    function moveNumbers(loopIndex, moveSlotsNum, value, useCase, value2) {
+        let arrPos = loopIndex - (moveSlotsNum * 4);
+        switch(useCase) {
+            case "move":
+                newArr[arrPos] = value;
+                newArr[loopIndex] = "";
+                break;
+            case "add":
+                let newValue = (parseInt(value) + parseInt(value2)).toString();
+                newArr[arrPos] = newValue;
+                newArr[loopIndex] = "";
+                usedSlots.push(arrPos);
+                score += parseInt(newValue);
+                break;
         }
     }
 }
@@ -148,6 +219,50 @@ function insertToGrid(arr) {
         }
     }
     addColor();
+    addScore();
+}
+
+// Resize grid slots when window size changes
+function resizeGrid() {
+    for (let i = 1; i < 5; i++){
+        for (let j = 1; j < 5; j++){
+            let width = document.getElementById("row" + i + "col" + j).offsetWidth;
+            document.getElementById("row" + i + "col" + j).style.height = width + "px";
+            document.getElementById("row" + i + "col" + j).style.lineHeight = width + "px";
+        }
+    }
+}
+
+let score = 0;
+
+function addScore() {
+    document.getElementById("score").innerHTML = score.toString();
+}
+
+// Rotates arrays to allow playRound to use them correctly
+function rotateArray(arr1, arr2, num0, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15){
+    arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
+        arr2[num8], arr2[num9], arr2[num10], arr2[num11], arr2[num12], arr2[num13], arr2[num14], arr2[num15]];
+    return arr1;
+}
+
+// Checks empty slots on the grid, then assigns either a 2 or a 4 to a random empty slot
+function addToEmptySpot(arr){
+    let emptySlots = [];
+    let emptySlotsNum = 1;
+    let randomSlot = 0;
+
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i] === ""){
+            emptySlots.push([emptySlotsNum, i]);
+            emptySlotsNum++;
+        }
+    }
+
+    if (emptySlots.length) {
+        randomSlot = Math.floor(Math.random() * emptySlots.length);
+        arr[emptySlots[randomSlot][1]] = Math.random() <= 0.5 ? "2" : "4";
+    }
 }
 
 // Adds classes based on value to add color
@@ -230,112 +345,6 @@ function addColor(){
                     break;
             }
         }
-    }
-}
-
-function playRound(newArr){
-
-    // array for slots that have already been used this keypress
-    let usedSlots = [];
-
-    for (let i = 4; i < newArr.length; i++) {
-
-        let value = newArr[i];
-        let upperValue = newArr[i - 4];
-        let upperValue2 = newArr[i - 8];
-        let upperValue3 = newArr[i - 12];
-        if (value !== "") {
-            if (upperValue === "") {
-                // checks if its 3rd row
-                if (upperValue2 !== undefined) {
-                    // checks if its 4th row
-                    if (upperValue3 !== undefined) {
-                        // 4th row
-                        if (upperValue2 === "" && upperValue3 === "") {
-                            moveNumbers(i, 3, value, "move");
-                        } else if (upperValue2 === "" && upperValue3) {
-                            if (upperValue3 === value) {
-                                if (usedSlots.includes(i - 12)) {
-                                    moveNumbers(i, 2, value, "move");
-                                } else {
-                                    moveNumbers(i, 3, value, "add", upperValue3);
-                                }
-                            } else {
-                                moveNumbers(i, 2, value, "move");
-                            }
-                        } else if (upperValue2 && upperValue3) {
-                            if (upperValue2 === value) {
-                                if (usedSlots.includes(i - 8)) {
-                                    moveNumbers(i, 1, value, "move");
-                                } else {
-                                    moveNumbers(i, 2, value, "add", upperValue2);
-                                }
-                            } else {
-                                moveNumbers(i, 1, value, "move");
-                            }
-                        }
-                    } // 3rd row
-                    else {
-                        if (upperValue2 === "") {
-                            moveNumbers(i, 2, value, "move");
-                        } else if (upperValue2 === value) {
-                            if (usedSlots.includes(i - 8)) {
-                                moveNumbers(i, 1, value, "move");
-                            } else {
-                                moveNumbers(i, 2, value, "add", upperValue2);
-                            }
-                        } else {
-                            moveNumbers(i, 1, value, "move");
-                        }
-                    }
-                } else {
-                    moveNumbers(i, 1, value, "move");
-                }
-            } else if (value === upperValue) {
-                moveNumbers(i, 1, value, "add", upperValue);
-            }
-        }
-    }
-
-    function moveNumbers(loopIndex, moveSlotsNum, value, useCase, value2) {
-        let arrPos = loopIndex - (moveSlotsNum * 4);
-        switch(useCase) {
-            case "move":
-                newArr[arrPos] = value;
-                newArr[loopIndex] = "";
-                break;
-            case "add":
-                newArr[arrPos] = (parseInt(value) + parseInt(value2)).toString();
-                newArr[loopIndex] = "";
-                usedSlots.push(arrPos);
-                break;
-        }
-    }
-}
-
-// Rotates arrays to allow playRound to use them correctly
-function rotateArray(arr1, arr2, num0, num1, num2, num3, num4, num5, num6, num7, num8, num9, num10, num11, num12, num13, num14, num15){
-    arr1 = [arr2[num0], arr2[num1], arr2[num2], arr2[num3], arr2[num4], arr2[num5], arr2[num6], arr2[num7],
-        arr2[num8], arr2[num9], arr2[num10], arr2[num11], arr2[num12], arr2[num13], arr2[num14], arr2[num15]];
-    return arr1;
-}
-
-// Checks empty slots on the grid, then assigns either a 2 or a 4 to a random empty slot
-function addToEmptySpot(arr){
-    let emptySlots = [];
-    let emptySlotsNum = 1;
-    let randomSlot = 0;
-
-    for (let i = 0; i < arr.length; i++){
-        if (arr[i] === ""){
-            emptySlots.push([emptySlotsNum, i]);
-            emptySlotsNum++;
-        }
-    }
-
-    if (emptySlots.length) {
-        randomSlot = Math.floor(Math.random() * emptySlots.length);
-        arr[emptySlots[randomSlot][1]] = Math.random() <= 0.5 ? "2" : "4";
     }
 }
 
