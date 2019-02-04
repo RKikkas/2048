@@ -51,6 +51,7 @@ window.onkeyup = function(e) {
 
     }
 };
+
 window.onresize = function() {
     resizeGrid();
 };
@@ -125,6 +126,8 @@ function makeMoves(move) {
     }
 
     insertToGrid(newArr);
+    checkForFail(newArr);
+
 }
 
 function playRound(newArr){
@@ -220,6 +223,97 @@ function insertToGrid(arr) {
     }
     addColor();
     addScore();
+}
+
+function checkForFail(arr){
+
+    let newArr = [];
+    let fail = true;
+
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i] !== ""){
+            newArr.push(arr[i]);
+        }
+    }
+
+    if (newArr.length === 16){
+        for (let i = 0; i < newArr.length; i++){
+            let value = newArr[i];
+            let upValue = newArr[i - 4];
+            let rightValue = newArr[i + 1];
+            let downValue = newArr[i + 4];
+            let leftValue = newArr[i - 1];
+
+            // Checks top left corner
+            if (i === 0){
+                if (value === rightValue || value === downValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks top row middle slots
+            if (i === 1 || i === 2){
+                if (value === rightValue || value === downValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks top right corner
+            if (i === 3){
+                if (value === downValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks 2nd and 3rd row leftmost slots
+            if (i === 4 || i === 8){
+                if (value === upValue || value === rightValue || value === downValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks 2nd and 3rd row middle slots
+            if (i === 5 || i === 6 || i === 9 || i === 10){
+                if (value === upValue|| value === rightValue || value === downValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks 2nd and 3rd row rightmost slots
+            if (i === 7 || i === 11){
+                if (value === upValue || value === downValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks bottom left corner
+            if (i === 12){
+                if (value === upValue || value === rightValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks bottom row middle slots
+            if (i === 13 || i === 14){
+                if (value === upValue || value === rightValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+            // Checks bottom row right corner
+            if (i === 15){
+                if (value === upValue || value === leftValue){
+                    fail = false;
+                    break;
+                }
+            }
+        }
+
+        if (fail) {
+            document.getElementById("gameover").style.display = "block";
+        }
+    }
+
 }
 
 // Resize grid slots when window size changes

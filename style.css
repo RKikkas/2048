@@ -1,6 +1,11 @@
 body {
     overscroll-behavior: contain;
 }
+#gameover {
+    color: #cc0000;
+    font-weight: bold;
+    display: none;
+}
 .gamecol {
     border: 1px solid black;
     padding: 0;
