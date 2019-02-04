@@ -70,12 +70,12 @@ window.onkeyup = function(e) {
     } else if (key === "s" || key === "S" || key === "ArrowDown"){
 
         // Rotate 180 degrees, in other words reverse it.
-        newArr = arr.reverse();
+        newArr = [...arr].reverse();
 
         playRound(newArr);
 
         // Rotate/reverse it back
-        newArr = newArr.reverse();
+        newArr.reverse();
 
         if(!compare(arr, newArr)){
             addToEmptySpot(newArr);
@@ -98,16 +98,7 @@ window.onkeyup = function(e) {
         }
     }
 
-    // Inserts the new array values on to the grid
-    for (let i = 1; i < 5; i++){
-        let j = 1;
-        for (let x = (i - 1) * 4; x < i * 4 ; x++){
-            document.getElementById("row" + i + "col" + j).innerHTML = newArr[x];
-            j++;
-        }
-    }
-
-    addColor();
+    insertToGrid(newArr);
 };
 window.onresize = function() {
     resizeGrid();
@@ -119,8 +110,21 @@ function resizeGrid() {
         for (let j = 1; j < 5; j++){
             let width = document.getElementById("row" + i + "col" + j).offsetWidth;
             document.getElementById("row" + i + "col" + j).style.height = width + "px";
+            document.getElementById("row" + i + "col" + j).style.lineHeight = width + "px";
         }
     }
+}
+
+// Inserts the new array values to the grid
+function insertToGrid(arr) {
+    for (let i = 1; i < 5; i++){
+        let j = 1;
+        for (let x = (i - 1) * 4; x < i * 4 ; x++){
+            document.getElementById("row" + i + "col" + j).innerHTML = arr[x];
+            j++;
+        }
+    }
+    addColor();
 }
 
 // Adds classes based on value to add color
@@ -135,66 +139,67 @@ function addColor(){
                 "num1024", "num2048", "num4096", "num8192", "num16384", "num32768", "num65536"];
             switch (value) {
                 case "2":
+                    className.remove(...classValues);
                     className.add("num2");
                     break;
                 case "4":
-                    className.remove("num2");
+                    className.remove(...classValues);
                     className.add("num4");
                     break;
                 case "8":
-                    className.remove("num4");
+                    className.remove(...classValues);
                     className.add("num8");
                     break;
                 case "16":
-                    className.remove("num8");
+                    className.remove(...classValues);
                     className.add("num16");
                     break;
                 case "32":
-                    className.remove("num16");
+                    className.remove(...classValues);
                     className.add("num32");
                     break;
                 case "64":
-                    className.remove("num32");
+                    className.remove(...classValues);
                     className.add("num64");
                     break;
                 case "128":
-                    className.remove("num64");
+                    className.remove(...classValues);
                     className.add("num128");
                     break;
                 case "256":
-                    className.remove("num128");
+                    className.remove(...classValues);
                     className.add("num256");
                     break;
                 case "512":
-                    className.remove("num256");
+                    className.remove(...classValues);
                     className.add("num512");
                     break;
                 case "1024":
-                    className.remove("num512");
+                    className.remove(...classValues);
                     className.add("num1024");
                     break;
                 case "2048":
-                    className.remove("num1024");
+                    className.remove(...classValues);
                     className.add("num2048");
                     break;
                 case "4096":
-                    className.remove("num2048");
+                    className.remove(...classValues);
                     className.add("num4096");
                     break;
                 case "8192":
-                    className.remove("num4096");
+                    className.remove(...classValues);
                     className.add("num8192");
                     break;
                 case "16384":
-                    className.remove("num8192");
+                    className.remove(...classValues);
                     className.add("num16384");
                     break;
                 case "32768":
-                    className.remove("num16384");
+                    className.remove(...classValues);
                     className.add("num32768");
                     break;
                 case "65536":
-                    className.remove("num32768");
+                    className.remove(...classValues);
                     className.add("num65536");
                     break;
                 default:

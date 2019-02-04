@@ -2,11 +2,10 @@
     border: 1px solid black;
     padding: 0;
     width: 25%;
-    display: flex;
-    align-items: center;
 }
 .colnumber {
     width: 100%;
+    margin: 0;
 }
 
 /* Number colors */
