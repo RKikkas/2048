@@ -301,7 +301,6 @@ function resizeGrid() {
 }
 
 function newGame() {
-    console.log("yeehaw");
     let startArr = [];
 
     for (let i = 0; i < 16; i++){
