@@ -1,33 +1,6 @@
 window.onload = function() {
     resizeGrid();
-
-    let startArr = [];
-
-    for (let i = 0; i < 16; i++){
-        startArr.push("");
-    }
-
-    let randomNum1;
-    let randomNum2;
-
-    do {
-        randomNum1 = Math.floor(Math.random() * 15);
-        randomNum2 = Math.floor(Math.random() * 15);
-    } while (randomNum1 === randomNum2);
-
-
-    startArr[randomNum1] = Math.random() <= 0.5 ? "2" : "4";
-    startArr[randomNum2] = "2";
-
-    for (let i = 1; i < 5; i++){
-        let j = 1;
-        for (let x = (i - 1) * 4; x < i * 4 ; x++){
-            document.getElementById("row" + i + "col" + j).innerHTML = startArr[x];
-            j++;
-        }
-    }
-
-    addColor();
+    newGame();
 };
 
 window.onkeyup = function(e) {
@@ -325,6 +298,37 @@ function resizeGrid() {
             document.getElementById("row" + i + "col" + j).style.lineHeight = width + "px";
         }
     }
+}
+
+function newGame() {
+    console.log("yeehaw");
+    let startArr = [];
+
+    for (let i = 0; i < 16; i++){
+        startArr.push("");
+    }
+
+    let randomNum1;
+    let randomNum2;
+
+    do {
+        randomNum1 = Math.floor(Math.random() * 15);
+        randomNum2 = Math.floor(Math.random() * 15);
+    } while (randomNum1 === randomNum2);
+
+
+    startArr[randomNum1] = Math.random() <= 0.5 ? "2" : "4";
+    startArr[randomNum2] = "2";
+
+    for (let i = 1; i < 5; i++){
+        let j = 1;
+        for (let x = (i - 1) * 4; x < i * 4 ; x++){
+            document.getElementById("row" + i + "col" + j).innerHTML = startArr[x];
+            j++;
+        }
+    }
+
+    addColor();
 }
 
 let score = 0;

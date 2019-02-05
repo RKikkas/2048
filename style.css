@@ -2,6 +2,14 @@ body {
     background-color: #F5EFE3;
     overscroll-behavior: contain;
 }
+#title {
+    font-weight: bold;
+}
+#newgame {
+    width: 100%;
+    background-color: #3C3528;
+    border-color: #3C3528;
+}
 #gameover {
     color: #cc0000;
     font-weight: bold;

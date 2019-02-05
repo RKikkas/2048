@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <h1 class="text-center">2048</h1>
+                <h1 id="title" class="text-center display-1">2048</h1>
                 <h1 id="gameover" class="text-center">Game over!</h1>
                 <div class="container game">
                     <div class="row text-center gamerow">
@@ -47,6 +47,8 @@
                 <div id="scorediv">
                     <h2 class="text-center score">Score: </h2><h2 id="score" class="text-center score">0</h2>
                 </div>
+                <br>
+                <button onclick="newGame()" type="button" id="newgame" class="btn btn-primary">New game!</button>
             </div>
         </div>
     </div>
