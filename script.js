@@ -327,6 +327,8 @@ function newGame() {
         }
     }
 
+    score = 0;
+    addScore();
     addColor();
 }
 
