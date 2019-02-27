@@ -327,6 +327,7 @@ function newGame() {
         }
     }
 
+    document.getElementById("gameover").style.display = "none";
     score = 0;
     addScore();
     addColor();
